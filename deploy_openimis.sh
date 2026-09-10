@@ -9,6 +9,30 @@ cp .env.example .env
 cp .env.openSearch.example .env.openSearch
 fi
 
+# generate a random secret for any password left empty in .env
+generate_secret() {
+  LC_ALL=C tr -dc 'A-Za-z0-9' </dev/urandom | head -c 32
+}
+
+for secret_var in DB_PASSWORD REDIS_PASSWORD SECRET_KEY
+do
+  if grep -Eq "^${secret_var}=\s*$" .env
+  then
+    echo "${secret_var} is empty in .env, generating a random value"
+    generated=$(generate_secret)
+    sed -i "s|^${secret_var}=.*$|${secret_var}=${generated}|" .env
+  fi
+done
+
+for secret_var in DB_PASSWORD REDIS_PASSWORD SECRET_KEY
+do
+  if ! grep -Eq "^${secret_var}=.+$" .env
+  then
+    echo "ERROR: ${secret_var} must be set to a non-empty value in .env" >&2
+    exit 1
+  fi
+done
+
 
 if [[ -f '.init.lock' ]]
 then
