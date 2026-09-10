@@ -6,7 +6,7 @@ x-api: &default-api
     - DB_PORT=${DB_PORT}
     - DB_NAME=${DB_NAME}
     - DB_USER=${DB_USER}
-    - DB_PASSWORD=${DB_PASSWORD}
+    - DB_PASSWORD=${DB_PASSWORD:?DB_PASSWORD must be set to a strong, unique value in .env}
     - SECRET_KEY=${SECRET_KEY}
     - SITE_ROOT=api
     - SITE_URL=${DOMAIN}
