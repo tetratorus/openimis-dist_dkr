@@ -14,11 +14,12 @@ In case of troubles, please contact our service desk via our [ticketing platform
 
 ## Fast lane
 
-You can use the script `deploy_openimis.sh` to initialise all components (uses PostgreSQL DB).
+You can use the script `deploy_openimis.sh` to initialise all components (uses PostgreSQL DB). It generates random `DB_PASSWORD` and `REDIS_PASSWORD` values in `.env` if they are empty.
 
 ## First startup
 
 * Copy `.env.example` to `.env` and make the necessary adjustments.
+* Set `DB_PASSWORD` and `REDIS_PASSWORD` to strong, unique values (e.g. `openssl rand -hex 16`). They are intentionally empty in `.env.example` and the stack refuses to start while they are unset. Any deployment that still uses the former example values must rotate them.
 * Choose a database default system to use. The default is PostgreSQL (`DB_DEFAULT=postgresql`, `DB_PORT=5432`), but you can also use MSSQL (`DB_DEFAULT=mssql`, `DB_PORT=1433`, `ACCEPT_EULA=Y`). 
 * Uncomment the line `DEMO_DATASET=true` in `.env` to initialise the database with the DEMO dataset. If you leave it commented, an empty openIMIS database will be created.
 

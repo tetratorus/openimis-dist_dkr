@@ -56,6 +56,8 @@ jobs:
           rm -f .env.bak
 
           echo 'SECRET_KEY=cypressci' >> .env
+          sed -i.bak "s|^DB_PASSWORD=.*|DB_PASSWORD=$(openssl rand -hex 16)|;s|^REDIS_PASSWORD=.*|REDIS_PASSWORD=$(openssl rand -hex 16)|" .env
+          rm -f .env.bak
           echo 'DEMO_DATASET=true' >> .env
           echo 'DB_TAG=25.04' >> .env
 
