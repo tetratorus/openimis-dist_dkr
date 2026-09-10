@@ -9,6 +9,10 @@
         proxy_set_header Content-Length "";
         proxy_set_header Host $host;
         proxy_set_header X-Original-URI $request_uri;
+        # Backends without opensearch_reports/auth_check (404) are gated on a
+        # valid session instead; auth_request turns any other status into 500.
+        proxy_intercept_errors on;
+        error_page 404 = /check_user/;
     }
 
     location /opensearch/ {
