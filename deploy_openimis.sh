@@ -9,6 +9,19 @@ cp .env.example .env
 cp .env.openSearch.example .env.openSearch
 fi
 
+# Never start with an empty/placeholder Redis password: generate a strong random one
+if ! grep -Eq '^REDIS_PASSWORD=.+' .env
+then
+echo "generating REDIS_PASSWORD"
+REDIS_PASSWORD_GEN=$(openssl rand -hex 32)
+if grep -q '^REDIS_PASSWORD=' .env
+then
+sed -i.bak "s|^REDIS_PASSWORD=.*|REDIS_PASSWORD=${REDIS_PASSWORD_GEN}|" .env && rm -f .env.bak
+else
+echo "REDIS_PASSWORD=${REDIS_PASSWORD_GEN}" >> .env
+fi
+fi
+
 
 if [[ -f '.init.lock' ]]
 then
