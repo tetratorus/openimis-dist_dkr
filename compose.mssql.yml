@@ -4,8 +4,8 @@ services:
     init: true
     restart: always
     environment:
-      - DB_USER_PASSWORD=${DB_PASSWORD}
-      - SA_PASSWORD=${DB_PASSWORD}
+      - DB_USER_PASSWORD=${DB_PASSWORD:?DB_PASSWORD must be set}
+      - SA_PASSWORD=${DB_SA_PASSWORD:?DB_SA_PASSWORD must be set to a strong, unique MSSQL sysadmin password}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - ACCEPT_EULA=${ACCEPT_EULA}
@@ -26,8 +26,9 @@ services:
       openimis-net:
     volumes:
       - database:/var/opt/mssql/data
-    ports:
-      - 1433:1433
-  ## WARNING:
+    ## WARNING:
     ## exposing the database port outside the openimis-net network
-    ## may lead to security issue (depending on your network topology)
+    ## may lead to security issue (depending on your network topology).
+    ## If host access is really needed, bind to loopback only:
+    # ports:
+    #   - 127.0.0.1:1433:1433
