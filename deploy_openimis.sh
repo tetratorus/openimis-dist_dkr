@@ -7,6 +7,9 @@ else
 echo "creating env files from example"
 cp .env.example .env
 cp .env.openSearch.example .env.openSearch
+REDIS_PASSWORD=$(openssl rand -base64 32 | tr -d '\n/+=')
+sed -i.bak "s|^REDIS_PASSWORD=.*|REDIS_PASSWORD=${REDIS_PASSWORD}|" .env
+rm -f .env.bak
 fi
 
 
