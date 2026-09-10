@@ -7,6 +7,11 @@ else
 echo "creating env files from example"
 cp .env.example .env
 cp .env.openSearch.example .env.openSearch
+# no database password is shipped in .env.example, generate one per deployment
+# the aA1@ suffix guarantees the MSSQL password complexity requirements
+sed -i "s/^DB_PASSWORD=$/DB_PASSWORD=$(openssl rand -base64 24 | tr -d '/+=')aA1@/" .env
+sed -i "s/^DB_SA_PASSWORD=$/DB_SA_PASSWORD=$(openssl rand -base64 24 | tr -d '/+=')aA1@/" .env
+echo "generated database passwords in .env"
 fi
 
 

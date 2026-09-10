@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       - DB_USER_PASSWORD=${DB_PASSWORD}
-      - SA_PASSWORD=${DB_PASSWORD}
+      - SA_PASSWORD=${DB_SA_PASSWORD}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - ACCEPT_EULA=${ACCEPT_EULA}
@@ -26,8 +26,9 @@ services:
       openimis-net:
     volumes:
       - database:/var/opt/mssql/data
+    ## The database is reachable from the other containers over openimis-net,
+    ## publishing a host port is only needed for external tooling. It defaults to
+    ## the loopback interface; set DB_BIND_ADDRESS to 0.0.0.0 only behind a
+    ## firewall or VPN.
     ports:
-      - 1433:1433
-  ## WARNING:
-    ## exposing the database port outside the openimis-net network
-    ## may lead to security issue (depending on your network topology)
+      - ${DB_BIND_ADDRESS:-127.0.0.1}:${DB_HOST_PORT:-1433}:1433

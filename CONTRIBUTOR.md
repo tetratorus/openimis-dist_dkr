@@ -19,7 +19,8 @@ You can use the script `deploy_openimis.sh` to initialise all components (uses P
 ## First startup
 
 * Copy `.env.example` to `.env` and make the necessary adjustments.
-* Choose a database default system to use. The default is PostgreSQL (`DB_DEFAULT=postgresql`, `DB_PORT=5432`), but you can also use MSSQL (`DB_DEFAULT=mssql`, `DB_PORT=1433`, `ACCEPT_EULA=Y`). 
+* Set `DB_PASSWORD` to a strong value, no default is shipped. With MSSQL, also set `DB_SA_PASSWORD` to a different strong value: it is the database sysadmin account and must not be reused by the application.
+* Choose a database default system to use. The default is PostgreSQL (`DB_DEFAULT=postgresql`, `DB_PORT=5432`), but you can also use MSSQL (`DB_DEFAULT=mssql`, `DB_PORT=1433`, `ACCEPT_EULA=Y`). With MSSQL the database port is published on `127.0.0.1` only; publish it on another interface (`DB_BIND_ADDRESS`) only when the port is protected by a firewall or VPN.
 * Uncomment the line `DEMO_DATASET=true` in `.env` to initialise the database with the DEMO dataset. If you leave it commented, an empty openIMIS database will be created.
 
 ## OpenFN/Lightning setup 

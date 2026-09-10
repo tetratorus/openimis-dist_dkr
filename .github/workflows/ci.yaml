@@ -52,10 +52,12 @@ jobs:
       - name: Setup environment
         run: |
           cp .env.example .env
-          sed -i.bak '/^DEMO_DATASET=/d;/^BE_TAG=/d;/^FE_TAG=/d;/^SECRET_KEY=/d' .env
+          sed -i.bak '/^DEMO_DATASET=/d;/^BE_TAG=/d;/^FE_TAG=/d;/^SECRET_KEY=/d;/^DB_PASSWORD=/d;/^DB_SA_PASSWORD=/d' .env
           rm -f .env.bak
 
           echo 'SECRET_KEY=cypressci' >> .env
+          echo "DB_PASSWORD=$(openssl rand -base64 24 | tr -d '/+=')aA1@" >> .env
+          echo "DB_SA_PASSWORD=$(openssl rand -base64 24 | tr -d '/+=')aA1@" >> .env
           echo 'DEMO_DATASET=true' >> .env
           echo 'DB_TAG=25.04' >> .env
 
