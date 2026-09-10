@@ -35,7 +35,7 @@ If the implementation involves managing the social protection workflow/import, t
 
 ## OpenSearch/OpenSearch Dashboards setup 
 
-OpenSearch and OpenSearch Dashboards ship in `compose.openSearch.yml`, which `compose.yml` includes - `docker compose up -d` starts them with everything else. Neither service publishes a host port: the only route to Dashboards is the frontend nginx at `/opensearch/`, which authorizes every request against the openIMIS dashboards right (`opensearch_reports/auth_check`) and redirects anonymous users to the login page.
+OpenSearch and OpenSearch Dashboards ship in `compose.openSearch.yml`, which `compose.yml` includes - `docker compose up -d` starts them with everything else. Neither service publishes a host port: the only route to Dashboards is the frontend nginx at `/opensearch/`, which authorizes every request against the openIMIS dashboards right (`opensearch_reports/auth_check`) and redirects anonymous users to the login page. Backend images that do not ship that endpoint yet (releases up to 25.10 answer 404) are gated on a valid openIMIS session instead.
 
   * Copy `.env.openSearch.example` to `.env.openSearch` and adjust if needed. The defaults run the cluster with the security plugin disabled and no admin credential configured anywhere; to enable the plugin set `OPENSEARCH_SECURITY_DISABLED=false`, `OPENSEARCH_DISABLE_DEMO_CONFIG=false` and a strong `OPENSEARCH_PASSWORD`.
   * `OPENSEARCH_BASIC_TOKEN` is only needed when the cluster requires basic auth; leave it empty otherwise. Bare base64: `echo -n "admin:<password>" | base64`.
