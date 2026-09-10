@@ -1,9 +1,9 @@
 services:
   redis:
-    image: redis:latest
+    image: redis:7.4
     restart: always
-    ports:
-      - "6379:6379"
+    expose:
+      - "6379"
     command: redis-server /usr/local/etc/redis/redis.conf --requirepass ${REDIS_PASSWORD}
     volumes:
       - redis-database:/data
