@@ -52,11 +52,12 @@ jobs:
       - name: Setup environment
         run: |
           cp .env.example .env
-          sed -i.bak '/^DEMO_DATASET=/d;/^BE_TAG=/d;/^FE_TAG=/d;/^SECRET_KEY=/d;/^REDIS_PASSWORD=/d' .env
+          sed -i.bak '/^DEMO_DATASET=/d;/^BE_TAG=/d;/^FE_TAG=/d;/^SECRET_KEY=/d' .env
+          # keep REDIS_PASSWORD in place: CACHE_URL references it and .env interpolation is ordered
+          sed -i.bak "s|^REDIS_PASSWORD=.*|REDIS_PASSWORD=$(openssl rand -hex 32)|" .env
           rm -f .env.bak
 
           echo 'SECRET_KEY=cypressci' >> .env
-          echo "REDIS_PASSWORD=$(openssl rand -hex 32)" >> .env
           echo 'DEMO_DATASET=true' >> .env
           echo 'DB_TAG=25.04' >> .env
 
