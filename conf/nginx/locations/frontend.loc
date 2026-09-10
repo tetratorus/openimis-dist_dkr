@@ -1,8 +1,8 @@
 
 
     location / {
-            return 302 https://$host/${PUBLIC_URL}/;
-        }
+            return 302 /${PUBLIC_URL}/;
+    }
 
     location /${PUBLIC_URL} {
         try_files $uri $uri/  /${PUBLIC_URL}/index.html;
