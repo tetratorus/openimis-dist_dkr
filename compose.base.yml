@@ -96,8 +96,10 @@ services:
       mode: replicated
       replicas: ${WORKER_REPLICAS:-3}   # default 3; increase via WORKER_REPLICAS if needed
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:4.3-management
     restart: always
+    volumes:
+      - ./conf/rabbitmq/20-openimis.conf:/etc/rabbitmq/conf.d/20-openimis.conf:ro
     healthcheck:
       test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
       interval: 30s
