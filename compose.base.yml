@@ -96,7 +96,7 @@ services:
       mode: replicated
       replicas: ${WORKER_REPLICAS:-3}   # default 3; increase via WORKER_REPLICAS if needed
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:4.1-management
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
